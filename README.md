@@ -32,7 +32,7 @@ capture your site from its URL), pick a template and a brand colour, and export 
 - Adjustable texts, app icon, typography and sizes
 - PNG export in several formats (cover, Open Graph, GitHub, X, Product Hunt, square), in high
   resolution
-- Interface in English and French, light and dark themes
+- Interface in English, French and Spanish, light and dark themes
 - **100% client-side**: no image is ever uploaded and no account is needed. The one optional
   exception: capturing from a URL sends the address you type to the capture service
 
@@ -82,7 +82,7 @@ templates/    one folder per cover template, plus the registry (registry.ts)
 mockups/      browser and phone frames (SVG / CSS)
 stores/       editor state (Zustand)
 lib/          pure logic: colours, images, export, capture client
-i18n/         home-made translator; texts live in messages/{fr,en}.json
+i18n/         home-made translator; texts live in messages/{fr,en,es}.json
 capture/      URL capture service (separate Vercel project, headless Chrome)
 docs/         specification (SPECS.md), internationalisation (I18N.md), capture (CAPTURE.md),
               README visuals (assets/)
