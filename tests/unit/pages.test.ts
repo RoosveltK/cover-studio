@@ -131,10 +131,11 @@ describe("hreflang", () => {
   })
 
   it("envoie le sélecteur de langue vers la Landing quand la traduction manque", () => {
-    expect(localePaths(alone, pages)).toEqual({ fr: "/", en: "/readme-banner" })
+    expect(localePaths(alone, pages)).toEqual({ fr: "/", en: "/readme-banner", es: "/" })
     expect(localePaths(en, pages)).toEqual({
       fr: "/mockup-site-web",
       en: "/website-mockup-from-url",
+      es: "/",
     })
   })
 

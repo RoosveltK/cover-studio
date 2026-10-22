@@ -60,6 +60,19 @@ export const PAGES: SitePage[] = [
     updatedAt: "2026-10-14",
   },
   {
+    kind: "landing",
+    locale: "es",
+    slug: "",
+    group: "landing",
+    primaryKeyword: "generador de mockups gratis",
+    secondaryKeywords: [
+      "generador de mockups",
+      "mockup online gratis",
+      "mockup de aplicación",
+    ],
+    updatedAt: "2026-10-14",
+  },
+  {
     kind: "use-case",
     locale: "en",
     slug: "github-social-preview",
