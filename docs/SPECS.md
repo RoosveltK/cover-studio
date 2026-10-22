@@ -31,7 +31,7 @@ layout. V1 reproduces that layout.
 ### 2.2 Out of V1
 - ~~Several templates~~: delivered (see `templates/registry.ts`)
 - ~~Other export ratios~~: delivered (cover, Open Graph, GitHub, X, Product Hunt, square)
-- ~~Localisation / multiple languages~~: delivered in fr/en, see [I18N.md](./I18N.md)
+- ~~Localisation / multiple languages~~: delivered in fr/en/es, see [I18N.md](./I18N.md)
 - CLI and GitHub Action
 - User accounts, cloud saving, application backend (the optional, stateless URL capture service
   is the only exception: see 6.7)

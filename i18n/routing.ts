@@ -1,4 +1,4 @@
-export const locales = ["fr", "en"] as const
+export const locales = ["fr", "en", "es"] as const
 
 export type Locale = (typeof locales)[number]
 
@@ -15,9 +15,11 @@ export const LOCALE_STORAGE_KEY = "cover-studio-locale"
 export const LOCALE_NAMES: Record<Locale, string> = {
   fr: "Français",
   en: "English",
+  es: "Español",
 }
 
 export const OPEN_GRAPH_LOCALES: Record<Locale, string> = {
   fr: "fr_FR",
   en: "en_US",
+  es: "es_ES",
 }

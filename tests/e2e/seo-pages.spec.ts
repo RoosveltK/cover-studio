@@ -1,7 +1,8 @@
-import { expect, test, type Page } from "@playwright/test"
+﻿import { expect, test, type Page } from "@playwright/test"
 
 import { EXPORT_SIZES } from "../../lib/export-sizes"
 import { contentFor } from "../../content/pages"
+import { LOCALE_NAMES } from "../../i18n/routing"
 import { PAGES, alternateLanguages, pagePath, pagesOf } from "../../lib/pages"
 import { openPanel } from "./helpers/editor"
 import { en, text } from "./helpers/messages"
@@ -17,7 +18,7 @@ const contentPages = PAGES.filter(
 )
 
 /** Remet la source sur « Fichiers » si la page s'ouvre sur la capture d'URL (service configuré). */
-async function useFiles(page: Page, locale: "fr" | "en") {
+async function useFiles(page: Page, locale: "fr" | "en" | "es") {
   const files = page.getByRole("button", {
     name: text(locale, "urlImport", "modeFiles"),
     exact: true,
@@ -105,7 +106,7 @@ for (const entry of contentPages) {
   })
 }
 
-for (const locale of ["en", "fr"] as const) {
+for (const locale of ["en", "fr", "es"] as const) {
   test(`la Landing ${locale} lie exactement ses pages d'usage`, async ({
     page,
   }) => {
@@ -136,12 +137,22 @@ test("le sélecteur de langue d'une page sans traduction renvoie vers la Landing
   const other = alone.locale === "en" ? "fr" : "en"
   await page.goto(pagePath(alone))
   await page
-    .getByRole("navigation", {
+    .getByRole("combobox", {
       name: text(alone.locale, "localeSwitcher", "label"),
     })
-    .getByRole("link", { name: other === "fr" ? "Français" : "English" })
     .click()
+  await page.getByRole("option", { name: LOCALE_NAMES[other] }).click()
   await expect(page).toHaveURL(new RegExp(`/${other}$`))
+})
+
+test("le sélecteur de langue propose l'espagnol", async ({ page }) => {
+  await page.goto("/en")
+  await page
+    .getByRole("combobox", { name: en("localeSwitcher", "label") })
+    .click()
+  await page.getByRole("option", { name: LOCALE_NAMES.es }).click()
+  await expect(page).toHaveURL(/\/es$/)
+  await expect(page.locator("html")).toHaveAttribute("lang", "es")
 })
 
 test("le sitemap liste toutes les pages du registre et pas l'éditeur", async ({

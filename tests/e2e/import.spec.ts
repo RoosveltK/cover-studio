@@ -132,9 +132,9 @@ test.describe("éditeur", () => {
     await openPanel(page, "railColors")
 
     await page
-      .getByRole("navigation", { name: en("localeSwitcher", "label") })
-      .getByRole("link", { name: "Français" })
+      .getByRole("combobox", { name: en("localeSwitcher", "label") })
       .click()
+    await page.getByRole("option", { name: "Français" }).click()
 
     await expect(page).toHaveURL(/\/fr\/editor/)
     await expect(page.getByRole("complementary").getByRole("heading", { level: 2 })).toHaveText(

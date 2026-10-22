@@ -48,10 +48,10 @@ test("le sélecteur de langue change de page et mémorise le choix", async ({ pa
   await page.goto("/en")
 
   await page
-    .getByRole("navigation", { name: en("localeSwitcher", "label") })
+    .getByRole("combobox", { name: en("localeSwitcher", "label") })
     .first()
-    .getByRole("link", { name: "Français" })
     .click()
+  await page.getByRole("option", { name: "Français" }).click()
 
   await expect(page).toHaveURL(/\/fr$/)
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(text("fr", "landing", "heroTitle"))

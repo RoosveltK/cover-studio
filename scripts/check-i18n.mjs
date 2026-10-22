@@ -1,4 +1,4 @@
-// Contrôle des messages : `pnpm i18n:check`.
+﻿// Contrôle des messages : `pnpm i18n:check`.
 //   1. mêmes clés dans toutes les langues ;
 //   2. mêmes variables `{nom}` dans chaque message ;
 //   3. aucune clé inutilisée dans le code ;
@@ -7,7 +7,7 @@ import { readdirSync, readFileSync, statSync } from "node:fs"
 import { join, relative } from "node:path"
 
 const ROOT = process.cwd()
-const LOCALES = ["fr", "en"]
+const LOCALES = ["fr", "en", "es"]
 const REFERENCE = "fr"
 // Namespaces dont les clés sont composées dynamiquement (`${id}Title`).
 const DYNAMIC_NAMESPACES = new Set(["panels"])
