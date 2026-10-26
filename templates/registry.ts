@@ -25,6 +25,8 @@ import { ScrapbookTemplate } from "./scrapbook/Template"
 import { DesktopTemplate } from "./desktop/Template"
 import { CompareTemplate } from "./compare/Template"
 import { QuoteTemplate } from "./quote/Template"
+import { SwipeTemplate } from "./swipe/Template"
+import { CompareMobileTemplate } from "./compare-mobile/Template"
 import { baseSchema, metricsSchema, mobileTrioSchema, noBrowserBarSchema } from "./shared/schema"
 import { COVER_SIZE } from "./shared/mockups"
 
@@ -45,6 +47,11 @@ const FULL_PAGE: Slot[] = [{ kind: "mobile", labelKey: "fullPage", key: "desktop
 const TWO_BROWSERS: Slot[] = [
   { kind: "desktop", labelKey: "browserBefore", key: "desktopImage" },
   { kind: "desktop", labelKey: "browserAfter", key: "desktopImage2" },
+]
+
+const TWO_PHONES: Slot[] = [
+  { kind: "mobile", labelKey: "phoneBefore", key: "mobileImage" },
+  { kind: "mobile", labelKey: "phoneAfter", key: "mobileImage2" },
 ]
 
 const THREE_PHONES: Slot[] = [
@@ -293,6 +300,26 @@ export const templates: Template[] = [
     schema: baseSchema,
     slots: TWO_BROWSERS,
     tags: ["desktop", "light", "minimal"],
+  },
+  {
+    id: "swipe",
+    nameKey: "swipeName",
+    descriptionKey: "swipeDescription",
+    size: COVER_SIZE,
+    component: SwipeTemplate,
+    schema: baseSchema,
+    slots: TWO_BROWSERS,
+    tags: ["desktop", "dark"],
+  },
+  {
+    id: "compare-mobile",
+    nameKey: "compareMobileName",
+    descriptionKey: "compareMobileDescription",
+    size: COVER_SIZE,
+    component: CompareMobileTemplate,
+    schema: mobileTrioSchema,
+    slots: TWO_PHONES,
+    tags: ["mobile", "colorful"],
   },
   {
     id: "quote",

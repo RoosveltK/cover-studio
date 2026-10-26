@@ -190,7 +190,11 @@
     "compareName": "Avant / après",
     "compareDescription": "Deux pages côte à côte, pour une refonte",
     "quoteName": "Témoignage",
-    "quoteDescription": "Une citation d'utilisateur à côté du téléphone"
+    "quoteDescription": "Une citation d'utilisateur à côté du téléphone",
+    "swipeName": "Curseur avant / après",
+    "swipeDescription": "Une page coupée en deux par une poignée",
+    "compareMobileName": "Avant / après mobile",
+    "compareMobileDescription": "L'ancien écran grisé, le nouveau mis en avant"
   },
   "templatesPanel": {
     "tagsLabel": "Filtrer par étiquette",
@@ -217,7 +221,9 @@
     "phoneRight": "Téléphone droit",
     "fullPage": "Capture pleine page",
     "browserBefore": "Navigateur avant",
-    "browserAfter": "Navigateur après"
+    "browserAfter": "Navigateur après",
+    "phoneBefore": "Téléphone avant",
+    "phoneAfter": "Téléphone après"
   },
   "fields": {
     "badgeLabel": "Pastille",

@@ -190,7 +190,11 @@
     "compareName": "Antes / después",
     "compareDescription": "Dos páginas lado a lado, para un rediseño",
     "quoteName": "Testimonio",
-    "quoteDescription": "Una cita de un usuario junto al teléfono"
+    "quoteDescription": "Una cita de un usuario junto al teléfono",
+    "swipeName": "Deslizador antes / después",
+    "swipeDescription": "Una página dividida en dos por un tirador",
+    "compareMobileName": "Antes / después móvil",
+    "compareMobileDescription": "La pantalla antigua en gris, la nueva en primer plano"
   },
   "templatesPanel": {
     "tagsLabel": "Filtrar por etiqueta",
@@ -217,7 +221,9 @@
     "phoneRight": "Teléfono a la derecha",
     "fullPage": "Captura de pantalla de página completa",
     "browserBefore": "Navegador, antes",
-    "browserAfter": "Navegador, después"
+    "browserAfter": "Navegador, después",
+    "phoneBefore": "Teléfono, antes",
+    "phoneAfter": "Teléfono, después"
   },
   "fields": {
     "badgeLabel": "Etiqueta",

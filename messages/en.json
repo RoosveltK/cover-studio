@@ -190,7 +190,11 @@
     "compareName": "Before / after",
     "compareDescription": "Two pages side by side, for a redesign",
     "quoteName": "Testimonial",
-    "quoteDescription": "A user quote next to the phone"
+    "quoteDescription": "A user quote next to the phone",
+    "swipeName": "Before / after slider",
+    "swipeDescription": "One page split in two by a handle",
+    "compareMobileName": "Mobile before / after",
+    "compareMobileDescription": "The old screen greyed out, the new one in front"
   },
   "templatesPanel": {
     "tagsLabel": "Filter by tag",
@@ -217,7 +221,9 @@
     "phoneRight": "Right phone",
     "fullPage": "Full-page screenshot",
     "browserBefore": "Browser, before",
-    "browserAfter": "Browser, after"
+    "browserAfter": "Browser, after",
+    "phoneBefore": "Phone, before",
+    "phoneAfter": "Phone, after"
   },
   "fields": {
     "badgeLabel": "Badge",
