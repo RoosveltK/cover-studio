@@ -27,7 +27,11 @@ const COVER = {
   chips: ["Free", "No account", "100% client-side"],
   footer: "github.com/roosveltkn/cover-studio",
   browserUrl: "coverstudio.portf.app",
+  // Le format GitHub (1280×640) réduit le template à ~43 % : sans agrandissement,
+  // la description tombe à ~13 px et devient illisible dans les aperçus de partage.
+  textScale: { badge: 1.4, description: 1.6, chips: 1.3, footer: 1.3 },
 }
+const MOBILE_VIEWPORT = { width: 390, height: 844 }
 
 const sharp = createRequire(createRequire(import.meta.url).resolve("next/package.json"))("sharp")
 
@@ -58,9 +62,9 @@ async function setChips(page, chips) {
   }
 }
 
-async function openEditor(page, file) {
+async function openEditor(page, files) {
   await page.goto(`${BASE}/en`)
-  await page.locator("#landing-image").setInputFiles(file)
+  await page.locator("#landing-image").setInputFiles(files)
   await page.getByRole("button", { name: "Create my cover" }).click()
   await page.waitForURL(/\/en\/editor/)
   await page.getByRole("region", { name: "Cover preview" }).waitFor()
@@ -93,8 +97,22 @@ try {
   const source = join(tmpdir(), "cs-source.png")
   await page.screenshot({ path: source })
 
+  // Une capture mobile remplit le cadre téléphone du template, sinon le bas de la cover reste vide.
+  const mobile = join(tmpdir(), "cs-mobile.png")
+  const mobileContext = await browser.newContext({
+    viewport: MOBILE_VIEWPORT,
+    deviceScaleFactor: 2,
+    isMobile: true,
+    locale: "en-US",
+  })
+  const mobilePage = await mobileContext.newPage()
+  await mobilePage.goto(`${BASE}/en`)
+  await mobilePage.waitForTimeout(1500)
+  await mobilePage.screenshot({ path: mobile })
+  await mobileContext.close()
+
   // 2. La cover du dépôt, générée par l'app.
-  await openEditor(page, source)
+  await openEditor(page, [source, mobile])
   await rail(page, "Text")
   await fill(page, "field-content-badge", COVER.badge)
   await fill(page, "field-content-name", COVER.name)
@@ -102,6 +120,10 @@ try {
   await setChips(page, COVER.chips)
   await fill(page, "field-content-footer", COVER.footer)
   await fill(page, "field-content-browserUrl", COVER.browserUrl)
+  await rail(page, "Font")
+  for (const [element, scale] of Object.entries(COVER.textScale)) {
+    await fill(page, `field-style-textScale-${element}`, String(scale))
+  }
   await rail(page, "Export")
   await page.getByRole("button", { name: /GitHub/ }).filter({ hasText: "1280" }).click()
   const [download] = await Promise.all([
