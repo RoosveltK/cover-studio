@@ -1,4 +1,10 @@
-import { createContext, useContext, type CSSProperties } from "react"
+import {
+  createContext,
+  useContext,
+  useLayoutEffect,
+  useState,
+  type CSSProperties,
+} from "react"
 
 import { DEFAULT_FONT, fontStack } from "@/lib/fonts"
 import type { CoverConfig, ImageAsset } from "@/types/cover"
@@ -50,6 +56,52 @@ export function nameFontSize(
   return length <= 12 ? base : Math.max(base * 0.66, (base * 12) / length)
 }
 
+/**
+ * Échelle du nom pour que son mot le plus long tienne dans sa largeur : le nom
+ * ne passe à la ligne qu'entre deux mots, jamais au milieu d'un mot (« MonAp / p »).
+ * Mesuré dans le DOM après rendu, puis de nouveau une fois les polices chargées.
+ */
+export function useFitScale(text: string, fontSize: number) {
+  // Ref de rappel gardée en état : la mesure se relance quand l'élément change.
+  const [element, setElement] = useState<HTMLElement | null>(null)
+  const [scale, setScale] = useState(1)
+
+  useLayoutEffect(() => {
+    if (!element) return
+    // Copie invisible à la taille de base, à la largeur laissée par la ligne
+    // (icône comprise) : un mot trop long la fait déborder, le rapport des
+    // largeurs donne l'échelle. Les cotes de mise en page ignorent le zoom de l'aperçu.
+    const measure = () => {
+      const parent = element.parentElement
+      if (!parent) return
+      const others = Array.from(parent.children).filter((child) => child !== element)
+      const gap = parseFloat(getComputedStyle(parent).columnGap) || 0
+      const width =
+        parent.clientWidth -
+        others.reduce((sum, child) => sum + (child as HTMLElement).offsetWidth + gap, 0)
+      const probe = element.cloneNode(true) as HTMLElement
+      Object.assign(probe.style, {
+        position: "absolute",
+        visibility: "hidden",
+        width: `${width}px`,
+        fontSize: `${fontSize}px`,
+      })
+      parent.appendChild(probe)
+      const natural = probe.scrollWidth
+      probe.remove()
+      setScale(natural > width ? Math.floor((width / natural) * 1000) / 1000 : 1)
+    }
+    measure()
+    let active = true
+    document.fonts?.ready.then(() => active && measure())
+    return () => {
+      active = false
+    }
+  }, [element, text, fontSize])
+
+  return [setElement, scale] as const
+}
+
 /** Pastille, nom, description et chips : bloc de texte commun aux templates. */
 export function TextBlock({
   content,
@@ -62,7 +114,9 @@ export function TextBlock({
   hideChips = false,
   style,
 }: TextBlockProps) {
-  const fontSize = nameFontSize(content, nameSize) * useTextScale("name")
+  const baseSize = nameFontSize(content, nameSize) * useTextScale("name")
+  const [fitRef, fitScale] = useFitScale(content.name, baseSize)
+  const fontSize = baseSize * fitScale
   const badgeScale = useTextScale("badge")
   const descriptionScale = useTextScale("description")
   const editingDescription = useIsEditing("description")
@@ -119,6 +173,7 @@ export function TextBlock({
       >
         {content.icon && <AppIcon image={content.icon} size={Math.round(fontSize * 1.1)} />}
         <p
+          ref={fitRef}
           style={{
             margin: 0,
             minWidth: 0,
@@ -126,7 +181,6 @@ export function TextBlock({
             fontWeight: 700,
             lineHeight: 1.08,
             letterSpacing: "-0.02em",
-            overflowWrap: "anywhere",
           }}
         >
           <EditableText

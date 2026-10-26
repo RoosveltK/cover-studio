@@ -117,7 +117,7 @@ exportRender: boolean   // clean copy mounted for the export
     (different element) and **not controlled** by React (text set on entry, read on each `input`)
     so the caret is never lost.
 - **`TextBlock`, `Chips`, `Footer`** use `EditableText`: 11 templates covered at once; brutal,
-  editorial, poster, store and terminal are adapted by hand.
+  editorial, poster and store are adapted by hand.
 - **`components/editor/inline-editing.tsx`** builds the context from the store and computes the
   selection frame (`getBoundingClientRect`, `ResizeObserver`); **`text-toolbar.tsx`** renders the
   toolbar in a fixed-position portal.

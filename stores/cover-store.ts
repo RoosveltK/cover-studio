@@ -23,6 +23,20 @@ export type StartOptions = {
   exportSize?: string
 }
 
+/**
+ * Templates retirés de la galerie et leur plus proche voisin : une config
+ * sauvegardée qui pointe vers l'un d'eux rouvre sur un modèle équivalent.
+ */
+const RETIRED_TEMPLATES: Record<string, string> = {
+  perspective: "showcase",
+  terminal: "spotlight",
+  split: "editorial",
+  cascade: "mobile-trio",
+  ribbon: "mobile-trio",
+  fan: "focus",
+  exploded: "callouts",
+}
+
 type CoverState = {
   config: CoverConfig
   /** Langue de la page, jamais persistée : elle vient de l'URL. */
@@ -169,6 +183,7 @@ export const useCoverStore = create<CoverState>()(
           config: {
             ...current.config,
             ...saved,
+            template: RETIRED_TEMPLATES[saved.template] ?? saved.template ?? current.config.template,
             content: {
               ...current.config.content,
               ...saved.content,

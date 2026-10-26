@@ -18,8 +18,8 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
-import { GripVertical, ImagePlus, Trash2 } from "lucide-react"
-import { useEffect, useRef, useState, type DragEvent } from "react"
+import { Crop, GripVertical, ImagePlus, Trash2 } from "lucide-react"
+import { useEffect, useRef, useState, type DragEvent, type PointerEvent } from "react"
 
 import { UrlImport } from "@/components/canva/url-import"
 import { Button } from "@/components/ui/button"
@@ -121,6 +121,9 @@ export function ImageGallery({
                   position={index + 1}
                   slotLabelKey={labelKeys[index]}
                   onRemove={() => onChange(images.filter((item) => item.id !== image.id))}
+                  onFocus={(focus) =>
+                    onChange(images.map((item) => (item.id === image.id ? { ...item, focus } : item)))
+                  }
                 />
               ))}
             </ol>
@@ -183,14 +186,17 @@ function SortableImage({
   position,
   slotLabelKey,
   onRemove,
+  onFocus,
 }: {
   image: ImageAsset
   position: number
   slotLabelKey: Slot["labelKey"] | null
   onRemove: () => void
+  onFocus: (focus: ImageAsset["focus"]) => void
 }) {
   const t = useTranslations("gallery")
   const tSlots = useTranslations("slots")
+  const [reframing, setReframing] = useState(false)
   const { attributes, listeners, setNodeRef, setActivatorNodeRef, transform, transition, isDragging } =
     useSortable({ id: image.id })
 
@@ -199,56 +205,151 @@ function SortableImage({
       ref={setNodeRef}
       style={{ transform: CSS.Transform.toString(transform), transition }}
       className={cn(
-        "flex items-center gap-2 rounded-lg border bg-background p-2 dark:bg-input/30",
+        "flex flex-col gap-2 rounded-lg border bg-background p-2 dark:bg-input/30",
         isDragging && "relative z-10 shadow-lg ring-2 ring-primary",
         !slotLabelKey && "opacity-60"
       )}
     >
-      <button
-        ref={setActivatorNodeRef}
-        type="button"
-        aria-label={t("move", { name: image.name, position })}
-        className="grid h-12 w-6 shrink-0 cursor-grab touch-none place-items-center rounded-md text-muted-foreground outline-none hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50 active:cursor-grabbing"
-        {...attributes}
-        {...listeners}
-      >
-        <GripVertical className="size-4" />
-      </button>
-      <span className="relative shrink-0">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={image.dataUrl}
-          alt=""
-          className="size-12 rounded-md object-cover object-top ring-1 ring-foreground/10"
-        />
-        <span className="absolute -top-1.5 -left-1.5 grid size-5 place-items-center rounded-full bg-foreground text-[10px] font-semibold text-background tabular-nums">
-          {position}
-        </span>
-      </span>
-      <span className="min-w-0 flex-1">
-        <span className="block truncate text-sm font-medium">{image.name}</span>
-        <span className="flex flex-wrap items-center gap-1.5 text-xs">
-          {slotLabelKey ? (
-            <span className="rounded-full bg-primary/10 px-2 py-0.5 font-medium text-primary">
-              {tSlots(slotLabelKey)}
-            </span>
-          ) : (
-            <span className="text-muted-foreground">{t("unused")}</span>
-          )}
-          <span className="text-muted-foreground">
-            {isPortrait(image) ? t("portrait") : t("landscape")}
+      <div className="flex items-center gap-2">
+        <button
+          ref={setActivatorNodeRef}
+          type="button"
+          aria-label={t("move", { name: image.name, position })}
+          className="grid h-12 w-6 shrink-0 cursor-grab touch-none place-items-center rounded-md text-muted-foreground outline-none hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50 active:cursor-grabbing"
+          {...attributes}
+          {...listeners}
+        >
+          <GripVertical className="size-4" />
+        </button>
+        <span className="relative shrink-0">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={image.dataUrl}
+            alt=""
+            className="size-12 rounded-md object-cover object-top ring-1 ring-foreground/10"
+          />
+          <span className="absolute -top-1.5 -left-1.5 grid size-5 place-items-center rounded-full bg-foreground text-[10px] font-semibold text-background tabular-nums">
+            {position}
           </span>
         </span>
-      </span>
-      <Button
-        variant="ghost"
-        size="icon"
-        aria-label={t("remove", { name: image.name })}
-        onClick={onRemove}
-      >
-        <Trash2 />
-      </Button>
+        <span className="min-w-0 flex-1">
+          <span className="block truncate text-sm font-medium">{image.name}</span>
+          <span className="flex flex-wrap items-center gap-1.5 text-xs">
+            {slotLabelKey ? (
+              <span className="rounded-full bg-primary/10 px-2 py-0.5 font-medium text-primary">
+                {tSlots(slotLabelKey)}
+              </span>
+            ) : (
+              <span className="text-muted-foreground">{t("unused")}</span>
+            )}
+            <span className="text-muted-foreground">
+              {isPortrait(image) ? t("portrait") : t("landscape")}
+            </span>
+          </span>
+        </span>
+        <Button
+          variant="ghost"
+          size="icon"
+          aria-label={t("reframe", { name: image.name })}
+          aria-expanded={reframing}
+          aria-pressed={reframing}
+          onClick={() => setReframing(!reframing)}
+        >
+          <Crop />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          aria-label={t("remove", { name: image.name })}
+          onClick={onRemove}
+        >
+          <Trash2 />
+        </Button>
+      </div>
+      {reframing && <FocusPicker image={image} onChange={onFocus} />}
     </li>
+  )
+}
+
+const DEFAULT_FOCUS = { x: 0.5, y: 0 }
+
+/**
+ * Choix de la partie gardée quand un cadre rogne la capture : un clic ou un
+ * glisser sur l'image place le point de cadrage, les curseurs le règlent au clavier.
+ */
+function FocusPicker({
+  image,
+  onChange,
+}: {
+  image: ImageAsset
+  onChange: (focus: ImageAsset["focus"]) => void
+}) {
+  const t = useTranslations("gallery")
+  const focus = image.focus ?? DEFAULT_FOCUS
+  const round = (value: number) => Math.round(Math.min(1, Math.max(0, value)) * 100) / 100
+
+  function pick(event: PointerEvent<HTMLDivElement>) {
+    const rect = event.currentTarget.getBoundingClientRect()
+    onChange({
+      x: round((event.clientX - rect.left) / rect.width),
+      y: round((event.clientY - rect.top) / rect.height),
+    })
+  }
+
+  const slider = (axis: "x" | "y") => (
+    <label className="flex items-center gap-2 text-xs text-muted-foreground">
+      <span className="w-20 shrink-0">{t(axis === "x" ? "focusX" : "focusY")}</span>
+      <input
+        type="range"
+        min={0}
+        max={100}
+        value={Math.round(focus[axis] * 100)}
+        onChange={(event) => onChange({ ...focus, [axis]: Number(event.target.value) / 100 })}
+        className="min-w-0 flex-1 accent-primary"
+      />
+    </label>
+  )
+
+  return (
+    <div className="flex flex-col gap-2 border-t pt-2">
+      <p className="text-xs text-muted-foreground">{t("reframeHelp")}</p>
+      <div className="flex justify-center rounded-md bg-muted p-1">
+        <div
+          role="presentation"
+          className="relative cursor-crosshair touch-none"
+          onPointerDown={(event) => {
+            event.currentTarget.setPointerCapture(event.pointerId)
+            pick(event)
+          }}
+          onPointerMove={(event) => {
+            if (event.currentTarget.hasPointerCapture(event.pointerId)) pick(event)
+          }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={image.dataUrl}
+            alt=""
+            draggable={false}
+            className="block max-h-48 w-auto max-w-full rounded-sm select-none"
+          />
+          <span
+            className="pointer-events-none absolute size-5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white bg-primary/70 shadow-md"
+            style={{ left: `${focus.x * 100}%`, top: `${focus.y * 100}%` }}
+          />
+        </div>
+      </div>
+      {slider("x")}
+      {slider("y")}
+      <Button
+        variant="outline"
+        size="sm"
+        disabled={!image.focus}
+        onClick={() => onChange(undefined)}
+        className="self-start"
+      >
+        {t("resetFocus")}
+      </Button>
+    </div>
   )
 }
 

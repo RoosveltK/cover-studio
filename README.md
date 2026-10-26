@@ -24,7 +24,7 @@ capture your site from its URL), pick a template and a brand colour, and export 
 
 ## Features
 
-- 16 templates (showcase, spotlight, bento, perspective, mobile-trio, aurora, editorial, terminal…)
+- 27 templates (showcase, spotlight, bento, mobile-trio, aurora, editorial, three before / after layouts, testimonial…)
 - Up to 5 screenshots, reordered by drag and drop
 - Capture from a URL: the site is analysed, you pick the pages, and they are captured on desktop
   and mobile (optional service, see [docs/CAPTURE.md](./docs/CAPTURE.md))

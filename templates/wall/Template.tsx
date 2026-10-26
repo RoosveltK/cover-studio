@@ -53,7 +53,7 @@ export function WallTemplate({ config }: { config: PlacedConfig }) {
           boxShadow: "0 24px 48px rgba(0, 0, 0, 0.35)",
         }}
       >
-        {image && <CoverImage src={image.dataUrl} position={position} />}
+        {image && <CoverImage image={image} position={position} />}
       </div>
     )
     if (kind === "desktop")
