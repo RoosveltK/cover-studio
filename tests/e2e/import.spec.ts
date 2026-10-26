@@ -142,3 +142,22 @@ test.describe("éditeur", () => {
     )
   })
 })
+
+test.describe("recadrage", () => {
+  test("le point de cadrage choisi dans la galerie déplace la capture dans l'aperçu", async ({ page }) => {
+    await openEditor(page)
+    await openPanel(page, "railMockups")
+    const reframe = page.getByRole("button", { name: en("gallery", "reframe").replace("{name}", "desktop.png") })
+    const reset = page.getByRole("button", { name: en("gallery", "resetFocus") })
+
+    await reframe.click()
+    await expect(reset).toBeDisabled()
+    await page.getByRole("slider", { name: en("gallery", "focusY") }).fill("80")
+
+    const preview = page.getByRole("region", { name: en("editor", "previewLabel") })
+    await expect(preview.locator('[role="presentation"][style*="50% 80%"]').first()).toBeVisible()
+    await expect(reset).toBeEnabled()
+    await reset.click()
+    await expect(preview.locator('[role="presentation"][style*="50% 80%"]')).toHaveCount(0)
+  })
+})

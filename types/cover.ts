@@ -12,8 +12,11 @@ export type ImageAsset = {
   luminance: number
   /** Couleur moyenne de la bande haute, pour la zone de statut du téléphone. */
   topColor: string
-  /** Couleur moyenne de la bande basse, pour combler une capture plus courte que l'écran. */
-  bottomColor?: string
+  /**
+   * Point de cadrage choisi dans la galerie (0–1 sur chaque axe) : la partie de
+   * la capture gardée quand le cadre la rogne. Absent : cadrage du template.
+   */
+  focus?: { x: number; y: number }
   /** Couleur vive dominante, proposée comme couleur de marque. */
   dominant?: string
 }
@@ -91,12 +94,13 @@ export type Slot = {
   /** Clé du libellé dans le namespace `slots`. */
   labelKey: MessageKey<"slots">
   /** Champ des mockups placés où le template lit cette capture. */
-  key: "desktopImage" | "mobileImage" | "mobileImage2" | "mobileImage3"
+  key: "desktopImage" | "desktopImage2" | "mobileImage" | "mobileImage2" | "mobileImage3"
 }
 
 /** Mockups tels que les templates les lisent, une fois les captures placées. */
 export type PlacedMockups = CoverConfig["mockups"] & {
   desktopImage?: ImageAsset
+  desktopImage2?: ImageAsset
   mobileImage?: ImageAsset
   mobileImage2?: ImageAsset
   mobileImage3?: ImageAsset

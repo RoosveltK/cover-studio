@@ -4,19 +4,14 @@ import { AuroraTemplate } from "./aurora/Template"
 import { BentoTemplate } from "./bento/Template"
 import { BrutalTemplate } from "./brutal/Template"
 import { CalloutsTemplate } from "./callouts/Template"
-import { CascadeTemplate } from "./cascade/Template"
 import { EditorialTemplate } from "./editorial/Template"
 import { FocusTemplate } from "./focus/Template"
 import { MobileTrioTemplate } from "./mobile-trio/Template"
-import { PerspectiveTemplate } from "./perspective/Template"
 import { PosterTemplate } from "./poster/Template"
-import { RibbonTemplate } from "./ribbon/Template"
 import { ShowcaseTemplate } from "./showcase/Template"
 import { SpotlightTemplate } from "./spotlight/Template"
 import { StoreTemplate } from "./store/Template"
 import { SunburstTemplate } from "./sunburst/Template"
-import { TerminalTemplate } from "./terminal/Template"
-import { ExplodedTemplate } from "./exploded/Template"
 import { WallTemplate } from "./wall/Template"
 import { BrandboardTemplate } from "./brandboard/Template"
 import { StudioTemplate } from "./studio/Template"
@@ -25,11 +20,11 @@ import { LongscrollTemplate } from "./longscroll/Template"
 import { CloseupTemplate } from "./closeup/Template"
 import { FlatlayTemplate } from "./flatlay/Template"
 import { MetricsTemplate } from "./metrics/Template"
-import { SplitTemplate } from "./split/Template"
 import { BlueprintTemplate } from "./blueprint/Template"
-import { FanTemplate } from "./fan/Template"
 import { ScrapbookTemplate } from "./scrapbook/Template"
 import { DesktopTemplate } from "./desktop/Template"
+import { CompareTemplate } from "./compare/Template"
+import { QuoteTemplate } from "./quote/Template"
 import { baseSchema, metricsSchema, mobileTrioSchema, noBrowserBarSchema } from "./shared/schema"
 import { COVER_SIZE } from "./shared/mockups"
 
@@ -45,6 +40,12 @@ const ONE_BROWSER: Slot[] = [{ kind: "desktop", labelKey: "browser", key: "deskt
 // Une capture pleine page est plus haute que large : l'emplacement la prend comme
 // une capture mobile, sans quoi une capture desktop ordinaire passerait devant.
 const FULL_PAGE: Slot[] = [{ kind: "mobile", labelKey: "fullPage", key: "desktopImage" }]
+
+// Avant / après : deux captures paysage, la plus ancienne en premier.
+const TWO_BROWSERS: Slot[] = [
+  { kind: "desktop", labelKey: "browserBefore", key: "desktopImage" },
+  { kind: "desktop", labelKey: "browserAfter", key: "desktopImage2" },
+]
 
 const THREE_PHONES: Slot[] = [
   { kind: "mobile", labelKey: "phoneCenter", key: "mobileImage" },
@@ -82,16 +83,6 @@ export const templates: Template[] = [
     schema: baseSchema,
     slots: BROWSER_AND_PHONE,
     tags: ["desktop", "light"],
-  },
-  {
-    id: "perspective",
-    nameKey: "perspectiveName",
-    descriptionKey: "perspectiveDescription",
-    size: COVER_SIZE,
-    component: PerspectiveTemplate,
-    schema: baseSchema,
-    slots: BROWSER_AND_PHONE,
-    tags: ["desktop", "dark"],
   },
   {
     id: "mobile-trio",
@@ -134,16 +125,6 @@ export const templates: Template[] = [
     tags: ["desktop", "light", "colorful", "playful"],
   },
   {
-    id: "terminal",
-    nameKey: "terminalName",
-    descriptionKey: "terminalDescription",
-    size: COVER_SIZE,
-    component: TerminalTemplate,
-    schema: baseSchema,
-    slots: BROWSER_AND_PHONE,
-    tags: ["desktop", "dark", "minimal"],
-  },
-  {
     id: "poster",
     nameKey: "posterName",
     descriptionKey: "posterDescription",
@@ -184,16 +165,6 @@ export const templates: Template[] = [
     tags: ["mobile", "dark"],
   },
   {
-    id: "cascade",
-    nameKey: "cascadeName",
-    descriptionKey: "cascadeDescription",
-    size: COVER_SIZE,
-    component: CascadeTemplate,
-    schema: mobileTrioSchema,
-    slots: THREE_PHONES,
-    tags: ["mobile", "light", "minimal"],
-  },
-  {
     id: "callouts",
     nameKey: "calloutsName",
     descriptionKey: "calloutsDescription",
@@ -202,26 +173,6 @@ export const templates: Template[] = [
     schema: mobileTrioSchema,
     slots: ONE_PHONE,
     tags: ["mobile", "light", "playful"],
-  },
-  {
-    id: "ribbon",
-    nameKey: "ribbonName",
-    descriptionKey: "ribbonDescription",
-    size: COVER_SIZE,
-    component: RibbonTemplate,
-    schema: mobileTrioSchema,
-    slots: THREE_PHONES,
-    tags: ["mobile", "colorful", "playful"],
-  },
-  {
-    id: "exploded",
-    nameKey: "explodedName",
-    descriptionKey: "explodedDescription",
-    size: COVER_SIZE,
-    component: ExplodedTemplate,
-    schema: mobileTrioSchema,
-    slots: ONE_PHONE,
-    tags: ["mobile", "light"],
   },
   {
     id: "wall",
@@ -304,16 +255,6 @@ export const templates: Template[] = [
     tags: ["desktop", "dark"],
   },
   {
-    id: "split",
-    nameKey: "splitName",
-    descriptionKey: "splitDescription",
-    size: COVER_SIZE,
-    component: SplitTemplate,
-    schema: baseSchema,
-    slots: BROWSER_AND_PHONE,
-    tags: ["desktop", "colorful"],
-  },
-  {
     id: "blueprint",
     nameKey: "blueprintName",
     descriptionKey: "blueprintDescription",
@@ -322,16 +263,6 @@ export const templates: Template[] = [
     schema: baseSchema,
     slots: BROWSER_AND_PHONE,
     tags: ["desktop", "dark", "minimal"],
-  },
-  {
-    id: "fan",
-    nameKey: "fanName",
-    descriptionKey: "fanDescription",
-    size: COVER_SIZE,
-    component: FanTemplate,
-    schema: mobileTrioSchema,
-    slots: THREE_PHONES,
-    tags: ["mobile", "dark", "playful"],
   },
   {
     id: "scrapbook",
@@ -352,6 +283,26 @@ export const templates: Template[] = [
     schema: baseSchema,
     slots: BROWSER_AND_PHONE,
     tags: ["desktop", "colorful", "playful"],
+  },
+  {
+    id: "compare",
+    nameKey: "compareName",
+    descriptionKey: "compareDescription",
+    size: COVER_SIZE,
+    component: CompareTemplate,
+    schema: baseSchema,
+    slots: TWO_BROWSERS,
+    tags: ["desktop", "light", "minimal"],
+  },
+  {
+    id: "quote",
+    nameKey: "quoteName",
+    descriptionKey: "quoteDescription",
+    size: COVER_SIZE,
+    component: QuoteTemplate,
+    schema: mobileTrioSchema,
+    slots: ONE_PHONE,
+    tags: ["mobile", "light", "playful"],
   },
 ]
 

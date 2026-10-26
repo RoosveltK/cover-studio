@@ -11,10 +11,6 @@ const RADIUS = 72
 const RING = 5
 const BEZEL = 13
 const STATUS_AREA = 64
-/** Hauteur / largeur de la zone de capture (402 × 920 moins anneau, cadre et barre d'état). */
-const SCREEN_RATIO =
-  (PHONE_SIZE.height - 2 * (RING + BEZEL) - STATUS_AREA) / (PHONE_SIZE.width - 2 * (RING + BEZEL))
-
 /** Zone de la capture dans le cadre (à l'échelle 1) : sert aux templates qui en extraient des morceaux. */
 export const PHONE_SCREEN = {
   left: RING + BEZEL,
@@ -36,7 +32,6 @@ export function PhoneFrame({ image, scale = 1, imagePosition = "top", style }: P
   const t = useTranslations("mockups")
   const statusColor = image?.topColor ?? "#ffffff"
   const s = (value: number) => value * scale
-  const shortImage = image ? image.height / image.width < SCREEN_RATIO : false
 
   return (
     <div
@@ -76,17 +71,12 @@ export function PhoneFrame({ image, scale = 1, imagePosition = "top", style }: P
               left: 0,
               right: 0,
               bottom: 0,
-              background: shortImage ? (image?.bottomColor ?? statusColor) : undefined,
             }}
           >
             {image ? (
-              // Une capture plus courte que l'écran est calée sur la largeur, en haut :
-              // `cover` la rognerait sur les côtés. Le bas est comblé de sa couleur.
-              <CoverImage
-                src={image.dataUrl}
-                position={shortImage ? "50% 0%" : `50% ${imagePosition}`}
-                size={shortImage ? "100% auto" : "cover"}
-              />
+              // La capture remplit tout l'écran ; une capture plus courte que l'écran
+              // est rognée sur les côtés, recentrable depuis la galerie.
+              <CoverImage image={image} position={`50% ${imagePosition}`} />
             ) : (
               <Placeholder color="#a0a0a8" label={t("mobilePlaceholder")} iconSize={s(48)} />
             )}

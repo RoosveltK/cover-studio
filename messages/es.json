@@ -147,8 +147,6 @@
     "spotlightDescription": "Diseño centrado y luminoso, estilo de lanzamiento",
     "bentoName": "Bento",
     "bentoDescription": "Cuadrícula con esquinas redondeadas",
-    "perspectiveName": "Perspectiva",
-    "perspectiveDescription": "Escena oscura, maquetas inclinadas en 3D",
     "mobileTrioName": "Trío móvil",
     "mobileTrioDescription": "Tres teléfonos, ideal para apps móviles",
     "editorialName": "Editorial",
@@ -157,8 +155,6 @@
     "auroraDescription": "Degradado difuminado y tarjeta de cristal",
     "brutalName": "Neo-brutal",
     "brutalDescription": "Contornos gruesos y sombras marcadas",
-    "terminalName": "Terminal",
-    "terminalDescription": "Oscuro y técnico, diseño de herramientas de desarrollo",
     "posterName": "Poster",
     "posterDescription": "Tipografía gigante y maquetas centradas",
     "sunburstName": "Rayos de sol",
@@ -167,14 +163,8 @@
     "storeDescription": "Tres paneles con descripciones, al estilo App Store",
     "focusName": "Primer plano",
     "focusDescription": "Un teléfono enorme e inclinado, escena oscura",
-    "cascadeName": "Cascada",
-    "cascadeDescription": "Tres teléfonos dispuestos en forma de escalera",
     "calloutsName": "Llamadas destacadas",
     "calloutsDescription": "Características en burbujas alrededor del teléfono",
-    "ribbonName": "Cinta",
-    "ribbonDescription": "Tres pantallas sobre una banda diagonal",
-    "explodedName": "Vista explosionada",
-    "explodedDescription": "Elementos de la pantalla que sobresalen del teléfono",
     "wallName": "Mosaico isométrico",
     "wallDescription": "Mosaico inclinado con todas las capturas de pantalla",
     "brandboardName": "Panel de marca",
@@ -191,16 +181,16 @@
     "flatlayDescription": "Teléfonos colocados en horizontal, vistos desde arriba",
     "metricsName": "Métricas",
     "metricsDescription": "Panel de control con cifras clave en tarjetas",
-    "splitName": "Dividido",
-    "splitDescription": "Fondo de dos tonos con el navegador atravesando la unión",
     "blueprintName": "Plano técnico",
     "blueprintDescription": "Dimensiones, anotaciones y bloque de título",
-    "fanName": "Abanico",
-    "fanDescription": "Cinco pantallas desplegadas como una mano de cartas",
     "scrapbookName": "Álbum creativo",
     "scrapbookDescription": "Fotos estilo Polaroid, cinta adhesiva y notas manuscritas",
     "desktopName": "Escritorio",
-    "desktopDescription": "Ventanas sobre un fondo de pantalla, con un dock"
+    "desktopDescription": "Ventanas sobre un fondo de pantalla, con un dock",
+    "compareName": "Antes / después",
+    "compareDescription": "Dos páginas lado a lado, para un rediseño",
+    "quoteName": "Testimonio",
+    "quoteDescription": "Una cita de un usuario junto al teléfono"
   },
   "templatesPanel": {
     "tagsLabel": "Filtrar por etiqueta",
@@ -225,7 +215,9 @@
     "phoneCenter": "Teléfono centrado",
     "phoneLeft": "Teléfono a la izquierda",
     "phoneRight": "Teléfono a la derecha",
-    "fullPage": "Captura de pantalla de página completa"
+    "fullPage": "Captura de pantalla de página completa",
+    "browserBefore": "Navegador, antes",
+    "browserAfter": "Navegador, después"
   },
   "fields": {
     "badgeLabel": "Etiqueta",
@@ -294,7 +286,12 @@
     "remainingOne": "Queda {count}",
     "remainingOther": "Quedan {count}",
     "limit": "Máximo de {max} capturas de pantalla.",
-    "fileError": "{name}: {message}"
+    "fileError": "{name}: {message}",
+    "reframe": "Reencuadrar {name}",
+    "reframeHelp": "Haz clic o arrastra sobre la imagen para elegir la parte que se conserva cuando el marco la recorta.",
+    "focusX": "Horizontal",
+    "focusY": "Vertical",
+    "resetFocus": "Encuadre automático"
   },
   "urlImport": {
     "modeLabel": "Origen de las capturas de pantalla",
@@ -427,5 +424,5 @@
   },
   "contentPage": {
     "breadcrumbLabel": "Ruta de navegación"
-    }
+  }
 }

@@ -123,7 +123,7 @@ export function BrowserFrame({
       </div>
       <div style={{ height: fitHeight, position: "relative" }}>
         {image ? (
-          <CoverImage src={image.dataUrl} position={`50% ${cropY * 100}%`} />
+          <CoverImage image={image} position={`50% ${cropY * 100}%`} />
         ) : (
           <Placeholder
             color={t.placeholderText}

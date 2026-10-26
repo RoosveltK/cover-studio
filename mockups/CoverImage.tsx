@@ -1,28 +1,39 @@
 import type { CSSProperties } from "react"
 
+import type { ImageAsset } from "@/types/cover"
+
 type CoverImageProps = {
-  src: string
-  /** Valeur CSS de `background-position`, ex. `50% 20%`. */
+  image: ImageAsset
+  /**
+   * Cadrage par défaut, en valeur CSS de `background-position` (ex. `50% 20%`).
+   * Le point de cadrage choisi par l'utilisateur (`image.focus`) passe devant.
+   */
   position?: string
-  size?: "cover" | "100% auto"
   style?: CSSProperties
 }
 
+/** Point de cadrage de la capture en `background-position`, sinon `fallback`. */
+function focusPosition(image: ImageAsset, fallback: string) {
+  const { focus } = image
+  return focus ? `${focus.x * 100}% ${focus.y * 100}%` : fallback
+}
+
 /**
- * Capture affichée en `cover`. Un `background-image` plutôt qu'un `<img>` avec
- * `object-fit` : Safari/iOS ignore `object-fit` dans le `foreignObject` SVG
- * utilisé par la capture DOM, ce qui déformait les captures à l'export.
+ * Capture affichée en `cover` : elle remplit toujours son cadre, quitte à être
+ * rognée. Un `background-image` plutôt qu'un `<img>` avec `object-fit` :
+ * Safari/iOS ignore `object-fit` dans le `foreignObject` SVG utilisé par la
+ * capture DOM, ce qui déformait les captures à l'export.
  */
-export function CoverImage({ src, position = "50% 0%", size = "cover", style }: CoverImageProps) {
+export function CoverImage({ image, position = "50% 0%", style }: CoverImageProps) {
   return (
     <div
       role="presentation"
       style={{
         width: "100%",
         height: "100%",
-        backgroundImage: `url("${src}")`,
-        backgroundSize: size,
-        backgroundPosition: position,
+        backgroundImage: `url("${image.dataUrl}")`,
+        backgroundSize: "cover",
+        backgroundPosition: focusPosition(image, position),
         backgroundRepeat: "no-repeat",
         ...style,
       }}
