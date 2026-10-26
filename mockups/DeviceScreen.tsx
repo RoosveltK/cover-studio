@@ -41,7 +41,7 @@ export function DeviceScreen({
       }}
     >
       {image ? (
-        <CoverImage src={image.dataUrl} position={`50% ${cropY * 100}%`} />
+        <CoverImage image={image} position={`50% ${cropY * 100}%`} />
       ) : (
         <Placeholder
           color={dark ? "#6c6c76" : "#a0a0a8"}

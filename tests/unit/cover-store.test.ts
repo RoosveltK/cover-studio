@@ -187,6 +187,18 @@ describe("persistance", () => {
     expect(config.mockups.images).toEqual([image])
   })
 
+  it("rouvre un template retiré sur son plus proche voisin", async () => {
+    storage.data.set(
+      STORAGE_KEY,
+      JSON.stringify({ version: 3, state: { config: { ...defaultConfig("en"), template: "fan" } } })
+    )
+    const { useCoverStore, hydrateCoverStore } = await loadStore()
+
+    hydrateCoverStore()
+
+    expect(useCoverStore.getState().config.template).toBe("focus")
+  })
+
   it("reprend le nom en deux parties d'une sauvegarde v2", async () => {
     const content: Record<string, unknown> = { ...defaultConfig("en").content }
     delete content.name

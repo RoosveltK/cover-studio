@@ -235,7 +235,7 @@ export function ScrapbookTemplate({ config }: { config: PlacedConfig }) {
             caption={caption(index)}
           >
             {shot.image ? (
-              <CoverImage src={shot.image.dataUrl} position={shot.position} />
+              <CoverImage image={shot.image} position={shot.position} />
             ) : (
               <Placeholder
                 color="#a0a0a8"

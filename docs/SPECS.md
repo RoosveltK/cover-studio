@@ -2,7 +2,7 @@
 
 > Name: Cover Studio
 > Status: original V1 specification, kept as the design reference. The project has since gone
-> beyond V1 (16 templates, several export formats, fr/en, URL capture): see the
+> beyond V1 (27 templates, several export formats, fr/en, URL capture): see the
 > [README](../README.md) for the current state.
 > License: open source (MIT)
 

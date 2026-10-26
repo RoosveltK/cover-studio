@@ -3,7 +3,7 @@ import type { CSSProperties } from "react"
 import type { CoverConfig } from "@/types/cover"
 
 import { EditableText, useIsEditing, useShowSlot } from "./editable"
-import { AppIcon, nameFontSize } from "./text-block"
+import { AppIcon, nameFontSize, useFitScale } from "./text-block"
 import { useBadgeShape, useTextScale } from "./typography"
 
 /**
@@ -57,7 +57,9 @@ export function AppName({
   icon?: boolean
   style?: CSSProperties
 }) {
-  const fontSize = nameFontSize(content, size) * useTextScale("name")
+  const baseSize = nameFontSize(content, size) * useTextScale("name")
+  const [fitRef, fitScale] = useFitScale(content.name, baseSize)
+  const fontSize = baseSize * fitScale
   return (
     <div
       style={{
@@ -73,6 +75,7 @@ export function AppName({
         <AppIcon image={content.icon} size={Math.round(fontSize * 1.05)} />
       )}
       <p
+        ref={fitRef}
         style={{
           margin: 0,
           minWidth: 0,
@@ -80,7 +83,6 @@ export function AppName({
           fontWeight: 700,
           lineHeight: 1.02,
           letterSpacing: "-0.03em",
-          overflowWrap: "anywhere",
           fontFamily: style?.fontFamily,
         }}
       >
